@@ -5,4 +5,8 @@ import br.edu.ifsp.moviesmanager.data.MovieDAO
 
 class MovieRepository(private val movieDAO: MovieDAO) {
     suspend fun insert(movie: Movie) = movieDAO.insert(movie)
+
+    fun getMoviesOrderedByName() = movieDAO.getMoviesOrderedByName()
+
+    fun getMoviesOrderedByNote() = movieDAO.getMoviesOrderedByNote()
 }

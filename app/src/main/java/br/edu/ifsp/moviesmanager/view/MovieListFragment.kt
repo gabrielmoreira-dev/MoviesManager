@@ -7,13 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.ifsp.moviesmanager.R
+import br.edu.ifsp.moviesmanager.adapter.MovieAdapter
+import br.edu.ifsp.moviesmanager.data.Movie
 import br.edu.ifsp.moviesmanager.databinding.FragmentMovieListBinding
 import br.edu.ifsp.moviesmanager.viewmodel.MovieViewModel
 
 class MovieListFragment : Fragment() {
     private lateinit var binding: FragmentMovieListBinding
     private lateinit var viewModel: MovieViewModel
+    private lateinit var movieAdapter: MovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +30,21 @@ class MovieListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMovieListBinding.inflate(inflater, container, false)
+        configureRecyclerView()
         binding.apply {
             fab.setOnClickListener { navigateToMovieForm() }
             return root
+        }
+    }
+
+    private fun configureRecyclerView() {
+        movieAdapter = MovieAdapter()
+        viewModel.movieList.observe(viewLifecycleOwner) {
+            it?.let { movieAdapter.updateList(it as ArrayList<Movie>) }
+        }
+        binding.recyclerview.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = movieAdapter
         }
     }
 
