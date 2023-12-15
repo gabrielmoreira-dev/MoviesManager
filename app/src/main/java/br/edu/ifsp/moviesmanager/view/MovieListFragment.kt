@@ -13,6 +13,7 @@ import br.edu.ifsp.moviesmanager.adapter.MovieAdapter
 import br.edu.ifsp.moviesmanager.data.Movie
 import br.edu.ifsp.moviesmanager.databinding.FragmentMovieListBinding
 import br.edu.ifsp.moviesmanager.viewmodel.MovieViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class MovieListFragment : Fragment() {
     private lateinit var binding: FragmentMovieListBinding
@@ -32,7 +33,7 @@ class MovieListFragment : Fragment() {
         binding = FragmentMovieListBinding.inflate(inflater, container, false)
         configureRecyclerView()
         binding.apply {
-            fab.setOnClickListener { navigateToMovieForm() }
+            fab.setOnClickListener { navigateToMovieForm(-1) }
             return root
         }
     }
@@ -51,10 +52,20 @@ class MovieListFragment : Fragment() {
                 it.putInt("movieId", movieAdapter.movieList[pos].id)
                 findNavController().navigate(R.id.action_movieListFragment_to_movieDetailFragment, it)
             }
+
+            override fun onEditItemClicked(pos: Int) {
+                navigateToMovieForm(movieAdapter.movieList[pos].id)
+            }
+
+            override fun onDeleteItemClicked(pos: Int) {
+                viewModel.delete(movieAdapter.movieList[pos])
+                Snackbar.make(binding.root, getString(R.string.movie_deleted), Snackbar.LENGTH_SHORT).show()
+            }
         })
     }
 
-    private fun navigateToMovieForm() {
-        findNavController().navigate(R.id.action_movieListFragment_to_movieFormFragment)
+    private fun navigateToMovieForm(id: Int) = Bundle().let {
+        it.putInt("movieId", id)
+        findNavController().navigate(R.id.action_movieListFragment_to_movieFormFragment, it)
     }
 }

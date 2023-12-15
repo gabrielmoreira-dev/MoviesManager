@@ -1,5 +1,6 @@
 package br.edu.ifsp.moviesmanager.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     var movieList = ArrayList<Movie>()
     private var listener: MovieListener? = null
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: ArrayList<Movie>) {
         movieList = newList
         notifyDataSetChanged()
@@ -33,6 +35,8 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
             holder.note.text = "★ ${it.note ?: 0}/10"
             Glide.with(holder.itemView).load(it.logo).into(holder.logo)
         }
+        holder.editBt.setOnClickListener { listener?.onEditItemClicked(position) }
+        holder.deleteBt.setOnClickListener { listener?.onDeleteItemClicked(position) }
     }
 
     override fun getItemCount() = movieList.size
@@ -42,6 +46,8 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
         val name = view.nameTv
         val genre = view.genreTv
         val note = view.noteTv
+        val editBt = view.editBt
+        val deleteBt = view.deleteBt
 
         init {
             view.root.setOnClickListener {
@@ -52,5 +58,7 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     interface MovieListener {
         fun onItemClicked(pos: Int)
+        fun onEditItemClicked(pos: Int)
+        fun onDeleteItemClicked(pos: Int)
     }
 }

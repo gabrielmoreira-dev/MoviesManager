@@ -13,6 +13,7 @@ import br.edu.ifsp.moviesmanager.R
 import br.edu.ifsp.moviesmanager.data.Movie
 import br.edu.ifsp.moviesmanager.databinding.FragmentMovieFormBinding
 import br.edu.ifsp.moviesmanager.viewmodel.MovieViewModel
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 
 class MovieFormFragment : Fragment() {
@@ -20,6 +21,10 @@ class MovieFormFragment : Fragment() {
     private lateinit var viewModel: MovieViewModel
     private val genres: Array<Movie.Genre> = Movie.Genre.entries.toTypedArray()
     private var selectedGenre = genres[0]
+
+    private val movieId: Int by lazy {
+        requireArguments().getInt("movieId")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +45,31 @@ class MovieFormFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (movieId != -1) {
+            setupMovie()
+        }
+    }
+
+    private fun setupMovie() {
+        viewModel.getMovieById(movieId)
+        binding.apply {
+            viewModel.movie.observe(viewLifecycleOwner) {
+                it?.let {
+                    nameEt.setText(it.name)
+                    nameEt.isEnabled = false
+                    yearEt.setText(it.year)
+                    producerEt.setText(it.producer)
+                    durationEt.setText(it.duration.toString())
+                    logoEt.setText(it.logo)
+                    genreSp.setSelection(genres.indexOfFirst { item -> item == it.genre })
+                    watchedCb.isChecked = it.watched
+                }
+            }
+        }
+    }
+
     private fun configureSpinner() {
         context?.let {
             val adapter = ArrayAdapter(it, android.R.layout.simple_list_item_1, genres)
@@ -55,8 +85,15 @@ class MovieFormFragment : Fragment() {
     }
 
     private fun save() {
-        viewModel.insert(getMovie())
-        Snackbar.make(binding.root, getString(R.string.movie_added), Snackbar.LENGTH_SHORT).show()
+        if (movieId == -1) {
+            viewModel.insert(getMovie())
+            Snackbar.make(binding.root, getString(R.string.movie_added), Snackbar.LENGTH_SHORT)
+                .show()
+        } else {
+            viewModel.update(getMovie())
+            Snackbar.make(binding.root, getString(R.string.movie_updated), Snackbar.LENGTH_SHORT)
+                .show()
+        }
         findNavController().popBackStack()
     }
 
@@ -66,7 +103,7 @@ class MovieFormFragment : Fragment() {
 
     private fun getMovie() = binding.let {
         Movie(
-            id = 0,
+            id = if (movieId == -1) 0 else movieId,
             name = it.nameEt.text.toString(),
             year = it.yearEt.text.toString(),
             producer = it.producerEt.text.toString(),

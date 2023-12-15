@@ -17,4 +17,8 @@
     <string name="duration_min">Duration: %1$s min</string>
     <string name="is_watched">Watched: %1$s</string>
     <string name="note">★ %1$s/10</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="movie_deleted">Movie deleted!</string>
+    <string name="movie_updated">Movie updated!</string>
 </resources>

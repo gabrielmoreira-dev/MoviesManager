@@ -26,6 +26,14 @@ class MovieViewModel(application: Application): AndroidViewModel(application) {
         repository.insert(movie)
     }
 
+    fun update(movie: Movie) = viewModelScope.launch(Dispatchers.IO) {
+        repository.update(movie)
+    }
+
+    fun delete(movie: Movie) = viewModelScope.launch(Dispatchers.IO) {
+        repository.delete(movie)
+    }
+
     fun getMoviesOrderedByName() {
         movieList = repository.getMoviesOrderedByName()
     }
