@@ -13,4 +13,8 @@
     <string name="watched">Watched:</string>
     <string name="logo">Logo:</string>
     <string name="movie_added">Movie added!</string>
+    <string name="movie_details">%1$s, %2$s, %3$s</string>
+    <string name="duration_min">Duration: %1$s min</string>
+    <string name="is_watched">Watched: %1$s</string>
+    <string name="note">★ %1$s/10</string>
 </resources>

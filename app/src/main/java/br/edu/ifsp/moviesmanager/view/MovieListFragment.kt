@@ -28,7 +28,7 @@ class MovieListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMovieListBinding.inflate(inflater, container, false)
         configureRecyclerView()
         binding.apply {
@@ -46,6 +46,12 @@ class MovieListFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = movieAdapter
         }
+        movieAdapter.setOnClickListener(object : MovieAdapter.MovieListener {
+            override fun onItemClicked(pos: Int) = Bundle().let {
+                it.putInt("movieId", movieAdapter.movieList[pos].id)
+                findNavController().navigate(R.id.action_movieListFragment_to_movieDetailFragment, it)
+            }
+        })
     }
 
     private fun navigateToMovieForm() {

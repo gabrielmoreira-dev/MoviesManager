@@ -15,4 +15,7 @@ interface MovieDAO {
 
     @Query("SELECT * FROM movie ORDER BY note")
     fun getMoviesOrderedByNote(): LiveData<List<Movie>>
+
+    @Query("SELECT * FROM movie WHERE id=:id")
+    fun getMovieById(id: Int): LiveData<Movie>
 }

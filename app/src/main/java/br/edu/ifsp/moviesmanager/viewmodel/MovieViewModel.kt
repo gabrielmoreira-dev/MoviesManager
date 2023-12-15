@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 class MovieViewModel(application: Application): AndroidViewModel(application) {
     private val repository: MovieRepository
     lateinit var movieList: LiveData<List<Movie>>
+    lateinit var movie: LiveData<Movie>
 
     init {
         repository = MovieRepository(
@@ -31,5 +32,9 @@ class MovieViewModel(application: Application): AndroidViewModel(application) {
 
     fun getMoviesOrderedByNote() {
         movieList = repository.getMoviesOrderedByNote()
+    }
+
+    fun getMovieById(id: Int) = viewModelScope.launch {
+        movie = repository.getMovieById(id)
     }
 }

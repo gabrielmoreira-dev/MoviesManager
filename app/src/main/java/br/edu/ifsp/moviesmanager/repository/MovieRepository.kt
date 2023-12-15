@@ -9,4 +9,6 @@ class MovieRepository(private val movieDAO: MovieDAO) {
     fun getMoviesOrderedByName() = movieDAO.getMoviesOrderedByName()
 
     fun getMoviesOrderedByNote() = movieDAO.getMoviesOrderedByNote()
+
+    fun getMovieById(id: Int) = movieDAO.getMovieById(id)
 }
