@@ -21,4 +21,7 @@
     <string name="delete">Delete</string>
     <string name="movie_deleted">Movie deleted!</string>
     <string name="movie_updated">Movie updated!</string>
+    <string name="order_by">Order by:</string>
+    <string name="name_bt">Name</string>
+    <string name="note_bt">Note</string>
 </resources>

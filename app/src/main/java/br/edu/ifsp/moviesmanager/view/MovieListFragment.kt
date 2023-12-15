@@ -34,6 +34,8 @@ class MovieListFragment : Fragment() {
         configureRecyclerView()
         binding.apply {
             fab.setOnClickListener { navigateToMovieForm(-1) }
+            orderNameBt.setOnClickListener { viewModel.getMoviesOrderedByName() }
+            orderNoteBt.setOnClickListener { viewModel.getMoviesOrderedByNote() }
             return root
         }
     }

@@ -21,7 +21,7 @@ interface MovieDAO {
     @Query("SELECT * FROM movie ORDER BY name")
     fun getMoviesOrderedByName(): LiveData<List<Movie>>
 
-    @Query("SELECT * FROM movie ORDER BY note")
+    @Query("SELECT * FROM movie ORDER BY note DESC")
     fun getMoviesOrderedByNote(): LiveData<List<Movie>>
 
     @Query("SELECT * FROM movie WHERE id=:id")
